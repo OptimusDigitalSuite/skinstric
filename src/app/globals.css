@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* Design tokens land here once the Figma arrives — colours, type scale, spacing.
+   Keeping it bare on purpose so nothing has to be unpicked later. */
+@theme {
+  --font-sans: "Roobert TRIAL", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #fcfcfc;
+  color: #1a1b1c;
+  -webkit-font-smoothing: antialiased;
+}
