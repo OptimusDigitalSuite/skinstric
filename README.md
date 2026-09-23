@@ -5,7 +5,10 @@ flow. Approved to start 2026-09-23 by Michel Mitri. Brief and screens: `identity
 
 ## Stack
 
-Next.js (App Router) · Tailwind v4 · deployed on Vercel. All inside the brief's allowed list
+Next.js **16.2.10** (App Router) · React 19.2.4 · Tailwind v4 · React Icons · deployed on Vercel.
+Versions deliberately match `products/summarist`, so npm installs mostly from cache.
+
+**Next 16 note:** middleware is `proxy.ts`, not `middleware.ts`, and `cookies()` is async. All inside the brief's allowed list
 (React *or* Next, Tailwind *or* plain CSS, GSAP/ThreeJS optional).
 
 ## Run it
