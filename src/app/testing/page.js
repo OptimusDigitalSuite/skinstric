@@ -60,6 +60,7 @@ export default function Testing() {
   return (
     <Shell
       section="INTRO"
+      eyebrow="To start analysis"
       back={{ onClick: handleBack, disabled: sending }}
       // Frame 505: PROCEED only appears once there's something to submit.
       proceed={
@@ -68,10 +69,6 @@ export default function Testing() {
           : null
       }
     >
-      <p className="absolute top-2 left-6 text-xs font-semibold tracking-[0.08em] uppercase md:left-8">
-        To start analysis
-      </p>
-
       <Diamonds size={480} />
 
       <form id="intake" onSubmit={handleSubmit} className="relative w-full max-w-xl text-center">
