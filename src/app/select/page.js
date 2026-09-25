@@ -26,7 +26,7 @@ export default function Select() {
   if (!intake) return null;
 
   return (
-    <Shell section="ANALYSIS">
+    <Shell section="ANALYSIS" back={{ href: "/testing" }}>
       <div className="w-full max-w-2xl text-center">
         <p className="mb-10 text-xs uppercase tracking-[0.2em] text-neutral-500">
           To start analysis

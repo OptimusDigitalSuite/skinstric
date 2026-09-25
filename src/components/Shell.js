@@ -1,32 +1,48 @@
 import Link from "next/link";
+import DiamondButton from "@/components/DiamondButton";
 
 /**
- * The frame every screen sits in: the wordmark and section label top-left,
- * ENTER CODE top-right, and a slot along the bottom for BACK / PROCEED.
- * Deliberately plain — the Figma decides how this actually looks.
+ * The frame every screen sits in, per the Figma: SKINSTRIC and a bracketed
+ * section label top-left, ENTER CODE top-right, BACK bottom-left and PROCEED
+ * bottom-right. `back` / `proceed` take DiamondButton props (or null to hide);
+ * `footer` replaces the whole bottom bar when a screen needs something custom.
  */
-export default function Shell({ section = "INTRO", children, footer = null }) {
+export default function Shell({
+  section = "INTRO",
+  children,
+  back = { href: "/" },
+  proceed = null,
+  footer,
+}) {
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="flex items-center justify-between px-6 py-5 text-xs tracking-[0.18em] uppercase">
-        <p className="font-semibold">
-          Skinstric <span className="ml-2 font-normal text-neutral-500">[ {section} ]</span>
+      <header className="flex items-center justify-between px-6 py-5 md:px-8">
+        <p className="text-sm leading-none font-semibold tracking-tight uppercase">
+          <Link href="/" className="hover:opacity-70">
+            Skinstric
+          </Link>
+          <span className="ml-3 font-normal text-neutral-500">[ {section} ]</span>
         </p>
         <button
           type="button"
-          className="border border-neutral-900 px-3 py-1.5 text-[10px] tracking-[0.18em] hover:bg-neutral-900 hover:text-white"
+          className="bg-neutral-900 px-4 py-2 text-[10px] font-semibold tracking-[0.12em] text-[#fcfcfc] uppercase transition-opacity hover:opacity-80"
         >
           Enter code
         </button>
       </header>
 
-      <main className="flex flex-1 flex-col items-center justify-center px-6">{children}</main>
+      <main className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-6">
+        {children}
+      </main>
 
-      <footer className="flex items-center justify-between px-6 py-6 text-xs tracking-[0.18em] uppercase">
-        {footer ?? (
-          <Link href="/" className="text-neutral-500 hover:text-neutral-900">
-            ◀ Back
-          </Link>
+      <footer className="flex min-h-24 items-center justify-between px-6 py-6 md:px-8">
+        {footer !== undefined ? (
+          footer
+        ) : (
+          <>
+            {back ? <DiamondButton direction="back" {...back} /> : <span />}
+            {proceed ? <DiamondButton direction="proceed" {...proceed} /> : <span />}
+          </>
         )}
       </footer>
     </div>
