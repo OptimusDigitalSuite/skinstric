@@ -4,7 +4,7 @@
  * against the others). Purely decorative, so it's hidden from screen readers
  * and never takes clicks.
  *
- * `size` is the outer diamond's side in px; it shrinks to fit narrow screens.
+ * `size` is the outer diamond's side in px; it shrinks to fit narrow or short screens.
  */
 const RINGS = [
   { scale: 1, className: "diamond-ring diamond-ring--outer" },
@@ -17,7 +17,8 @@ export default function Diamonds({ size = 480, className = "" }) {
     <div
       aria-hidden="true"
       className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${className}`}
-      style={{ width: `min(${size}px, 78vw)`, aspectRatio: "1 / 1" }}
+      // A 45° square is √2 taller than its side, so cap by height as well as width
+      style={{ width: `min(${size}px, 78vw, 55dvh)`, aspectRatio: "1 / 1" }}
     >
       {RINGS.map(({ scale, className: ring }) => (
         <span

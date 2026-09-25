@@ -46,8 +46,8 @@ Three parts, all driven by the same API response:
 
 ## Build order
 
-1. ~~Intake: name → city → phase one~~ (built, matches 002 / 504 / 505 — needs the visual pass)
-2. The shell: wordmark, section label, ENTER CODE, BACK/PROCEED, and the rotating diamonds as one reusable component
+1. ~~Intake: name → city → phase one~~ (built and restyled to 002 / 504 / 505, commit `1778394`)
+2. ~~The shell: wordmark, section label, ENTER CODE, BACK/PROCEED, and the rotating diamonds~~ (`Shell`, `Diamonds`, `DiamondButton`)
 3. Landing (000 / 001)
 4. Analysis choice (005) + gallery upload, which needs no camera permission
 5. Camera (006 / 007 / 009 / 010)
