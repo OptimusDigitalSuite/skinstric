@@ -12,13 +12,22 @@ const MAX_EDGE = 1024;
 const QUALITY = 0.88;
 const MAX_INPUT_BYTES = 20 * 1024 * 1024;
 
-/** Draw any image source (an <img>, ImageBitmap or <video>) into an upload-ready JPEG. */
-export function toUpload(source, width, height) {
+/**
+ * Draw any image source (an <img>, ImageBitmap or <video>) into an upload-ready
+ * JPEG. `mirror` flips it horizontally, so a selfie saves the way it was
+ * previewed.
+ */
+export function toUpload(source, width, height, { mirror = false } = {}) {
   const scale = Math.min(1, MAX_EDGE / Math.max(width, height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.round(width * scale);
   canvas.height = Math.round(height * scale);
-  canvas.getContext("2d").drawImage(source, 0, 0, canvas.width, canvas.height);
+  const ctx = canvas.getContext("2d");
+  if (mirror) {
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+  }
+  ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
   const dataUrl = canvas.toDataURL("image/jpeg", QUALITY);
   return { dataUrl, base64: dataUrl.slice(dataUrl.indexOf(",") + 1) };
 }

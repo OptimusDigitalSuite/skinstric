@@ -48,8 +48,8 @@ Three parts, all driven by the same API response:
 
 1. ~~Intake: name → city → phase one~~ (built and restyled to 002 / 504 / 505, commit `1778394`)
 2. ~~The shell: wordmark, section label, ENTER CODE, BACK/PROCEED, and the rotating diamonds~~ (`Shell`, `Diamonds`, `DiamondButton`)
-3. Landing (000 / 001)
-4. Analysis choice (005) + gallery upload, which needs no camera permission
-5. Camera (006 / 007 / 009 / 010)
-6. Loading (011) and the hub (012)
-7. Demographics (013 / 014) — the centrepiece
+3. ~~Landing (000 / 001)~~ (commit `a7eada8`; DISCOVER mirrors the 001 hover, keyboard focus drives it too)
+4. ~~Analysis choice (005) + gallery upload~~ (005/006 + drag-and-drop, in-browser downscale)
+5. ~~Camera (006 / 007 / 009 / 010)~~ (`/camera`: mirrored preview, flash, Space to shoot, camera released on capture, blocked/no-camera states)
+6. ~~Loading (011) and the hub (012)~~
+7. ~~Demographics (013 / 014)~~ (`/analysis/demographics`: ring count-up, radiogroup, confirm persists)

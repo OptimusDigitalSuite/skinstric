@@ -38,7 +38,9 @@ export default function Shell({
       </header>
 
       <main
-        className={`relative flex flex-1 flex-col items-center px-6 ${scroll ? "justify-start" : "justify-center overflow-hidden"}`}
+        // overflow-clip, not -hidden: a hidden box can still be scrolled by
+        // scrollIntoView/focus, which slid the whole landing 242px off-screen.
+        className={`relative flex flex-1 flex-col items-center px-6 ${scroll ? "justify-start" : "justify-center overflow-clip"}`}
       >
         {eyebrow && (
           <p className="absolute top-2 left-6 text-xs font-semibold tracking-[0.08em] uppercase md:left-8">{eyebrow}</p>

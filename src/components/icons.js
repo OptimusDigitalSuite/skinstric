@@ -38,6 +38,16 @@ export function ApertureIcon(props) {
   );
 }
 
+/** The small camera glyph inside frame 009's shutter button. */
+export function CameraGlyph(props) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true" {...props}>
+      <path d="M3.5 8.5a2 2 0 0 1 2-2h2.2l1.4-2h5.8l1.4 2h2.2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z" />
+      <circle cx="12" cy="13" r="3.6" />
+    </svg>
+  );
+}
+
 export function GalleryIcon(props) {
   return (
     <svg viewBox="0 0 120 120" fill="none" aria-hidden="true" {...props}>
