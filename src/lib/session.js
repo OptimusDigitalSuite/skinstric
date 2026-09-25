@@ -13,6 +13,7 @@ const KEYS = {
   intake: "skinstric:intake",
   photo: "skinstric:photo",
   analysis: "skinstric:analysis",
+  confirmed: "skinstric:confirmed",
 };
 
 function read(key) {
@@ -63,3 +64,10 @@ export function readAnalysis() {
   return value && typeof value === "object" && value.race && value.age && value.gender ? value : null;
 }
 export const writeAnalysis = (data) => write(KEYS.analysis, data);
+
+/** The visitor's confirmed picks, which may correct the A.I.: { race, age, gender }. */
+export function readConfirmed() {
+  const value = read(KEYS.confirmed);
+  return value && typeof value === "object" ? value : null;
+}
+export const writeConfirmed = (picks) => write(KEYS.confirmed, picks);

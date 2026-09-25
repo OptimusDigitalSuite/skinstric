@@ -7,7 +7,7 @@ import Preparing from "@/components/Preparing";
 import Shell from "@/components/Shell";
 import { ApertureIcon, GalleryIcon } from "@/components/icons";
 import { prepareFile } from "@/lib/image";
-import { readIntake, writeAnalysis, writePhoto } from "@/lib/session";
+import { readIntake, writeAnalysis, writeConfirmed, writePhoto } from "@/lib/session";
 import { analyzeImage } from "@/lib/skinstric";
 
 // Long enough that frame 011 registers as a step, short enough not to stall.
@@ -41,6 +41,7 @@ export default function Select() {
       const [data] = await Promise.all([analyzeImage(photo.base64), wait(MIN_PREPARING_MS)]);
       writePhoto(photo.dataUrl);
       writeAnalysis(data);
+      writeConfirmed(null); // a new photo means new picks to confirm
       router.push("/analysis");
     } catch (err) {
       // Never strand the visitor on the spinner: back to the choice, with the reason.

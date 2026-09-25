@@ -391,6 +391,322 @@ body {
   }
 }
 
+/* ── A.I. analysis hub (frame 012) ─────────────────────────────────────── */
+
+.hub {
+  --tile: min(9.6rem, 26vw, 16dvh); /* 153px as drawn */
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, var(--tile));
+  gap: 0.35rem;
+  transform: rotate(45deg);
+}
+.hub__tile {
+  display: grid;
+  place-items: center;
+  width: var(--tile);
+  height: var(--tile);
+  background: #f3f3f4;
+  color: #1a1b1c;
+  transition:
+    background-color 250ms ease,
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: hub-tile-in 700ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(200ms + var(--i) * 90ms);
+}
+/* The label reads level again inside the turned tile */
+.hub__tile > span {
+  transform: rotate(-45deg);
+  max-width: 7.5rem;
+  text-align: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .hub__tile > span {
+    font-size: 0.8125rem;
+  }
+}
+.hub__tile small {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.5625rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #8a8f98;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+a.hub__tile:hover,
+a.hub__tile:focus-visible {
+  background: #e1e1e2;
+  transform: scale(1.03);
+  outline: none;
+}
+a.hub__tile:focus-visible > span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.hub__tile--soon {
+  cursor: default;
+}
+.hub__tile--soon > span {
+  color: #5d636c;
+}
+.hub__tile--soon:hover small {
+  opacity: 1;
+}
+.hub-rings {
+  animation: landing-fade 1200ms ease backwards;
+}
+
+/* ── Demographics (frames 013 / 014) ───────────────────────────────────── */
+
+.demo {
+  --grey: #f3f3f4;
+  --grey-hover: #e1e1e2;
+  --ink: #1a1b1c;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  padding-block: 0.5rem 1rem;
+}
+@media (min-width: 1024px) {
+  .demo {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 13rem 1fr 28rem; /* 207 · fill · 446 at 1920 */
+    grid-template-rows: auto 1fr;
+    column-gap: 1.05rem;
+    row-gap: clamp(2rem, 10dvh, 6rem);
+    padding: 0.5rem 2rem 0.25rem;
+  }
+  .demo__title {
+    grid-column: 1 / -1;
+  }
+}
+
+.demo__h1 {
+  font-size: clamp(2rem, 3.75vw, 4.5rem); /* 72px at 1920; fits a 390px phone beside ◀ ▶ */
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  margin: 0.35rem 0 0.5rem;
+}
+.demo__step {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 0.45rem;
+}
+.demo__step::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid var(--ink);
+  transform: rotate(45deg);
+  transition: transform 200ms ease;
+}
+.demo__step > span {
+  grid-area: 1 / 1;
+}
+.demo__step:hover::before,
+.demo__step:focus-visible::before {
+  transform: rotate(45deg) scale(1.15);
+}
+.demo__step:focus-visible {
+  outline: none;
+}
+.demo__step:focus-visible::before {
+  background: var(--ink);
+}
+.demo__step:focus-visible > span {
+  color: #fcfcfc;
+}
+
+/* Left rail */
+.demo__rail {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  align-content: start;
+}
+@media (min-width: 1024px) {
+  .demo__rail {
+    grid-template-columns: 1fr;
+  }
+}
+.demo__rail-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+  min-height: 5.25rem;
+  padding: 0.75rem;
+  border-top: 1px solid var(--ink);
+  background: var(--grey);
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: background-color 200ms ease;
+}
+@media (min-width: 1024px) {
+  .demo__rail-item {
+    min-height: 6.5rem; /* 104px as drawn */
+    font-size: 0.8125rem;
+  }
+}
+.demo__rail-item:hover {
+  background: var(--grey-hover);
+}
+.demo__rail-item[aria-selected="true"] {
+  background: var(--ink);
+  color: #fcfcfc;
+}
+.demo__rail-item:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Centre panel */
+.demo__panel {
+  position: relative;
+  min-height: 21rem;
+  padding: 1rem;
+  border-top: 1px solid var(--ink);
+  background: var(--grey);
+}
+.demo__pick {
+  font-size: clamp(1.75rem, 2.1vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.conf-ring {
+  position: absolute;
+  right: 50%;
+  bottom: 1.5rem;
+  translate: 50% 0;
+  width: min(15rem, 62vw);
+  aspect-ratio: 1;
+}
+@media (min-width: 1024px) {
+  .conf-ring {
+    right: 1rem;
+    translate: none;
+    width: min(24rem, 44dvh, 26vw); /* 381px at 1920 × 960 */
+  }
+}
+.conf-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* start the arc at 12 o'clock */
+  fill: none;
+}
+.conf-ring__track {
+  stroke: #d2d4d8;
+  stroke-width: 0.8; /* SVG units: the ring is drawn at ~1.9px per unit */
+}
+.conf-ring__arc {
+  stroke: var(--ink);
+  stroke-width: 1.3;
+  stroke-dasharray: 100; /* with pathLength=100, dashoffset = 100 - percent. No
+     vector-effect here: non-scaling-stroke breaks pathLength dashes in Chrome */
+}
+.conf-ring__value {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: clamp(1.75rem, 2.1vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.conf-ring__value sup {
+  font-size: 0.45em;
+  vertical-align: 1.1em;
+  margin-left: 0.1em;
+}
+
+/* Right list */
+.demo__list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-top: 1px solid var(--ink);
+  background: var(--grey);
+}
+.demo__list-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #3d4148;
+}
+.demo__options {
+  overflow-y: auto;
+}
+.demo__option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 3rem; /* 48px rows as drawn, and a comfortable tap target */
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  text-align: left;
+  transition: background-color 150ms ease;
+}
+.demo__option:hover {
+  background: var(--grey-hover);
+}
+.demo__option[aria-checked="true"] {
+  background: var(--ink);
+  color: #fcfcfc;
+}
+.demo__option:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: -2px;
+}
+.demo__option[aria-checked="true"]:focus-visible {
+  outline-color: #fcfcfc;
+}
+/* ◇ unselected, ◈ selected */
+.demo__mark {
+  position: relative;
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid currentColor;
+  transform: rotate(45deg);
+}
+.demo__option[aria-checked="true"] .demo__mark::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: currentColor;
+}
+
+@keyframes hub-tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
 @keyframes landing-rise {
   from {
     transform: translateY(105%);
@@ -419,7 +735,9 @@ body {
   .landing-line > span,
   .landing-side,
   .landing-blurb,
-  .camera-prompt {
+  .camera-prompt,
+  .hub__tile,
+  .hub-rings {
     animation: none;
   }
   .preparing::after {

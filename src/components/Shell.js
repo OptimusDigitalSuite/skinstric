@@ -16,6 +16,7 @@ export default function Shell({
   back = { href: "/" },
   proceed = null,
   footer,
+  scroll = false, // content taller than a phone screen (demographics) scrolls instead of clipping
 }) {
   return (
     <div className="flex min-h-dvh flex-col">
@@ -36,7 +37,9 @@ export default function Shell({
         )}
       </header>
 
-      <main className="relative flex flex-1 flex-col items-center justify-center overflow-hidden px-6">
+      <main
+        className={`relative flex flex-1 flex-col items-center px-6 ${scroll ? "justify-start" : "justify-center overflow-hidden"}`}
+      >
         {eyebrow && (
           <p className="absolute top-2 left-6 text-xs font-semibold tracking-[0.08em] uppercase md:left-8">{eyebrow}</p>
         )}
