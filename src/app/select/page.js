@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Diamonds from "@/components/Diamonds";
 import Preparing from "@/components/Preparing";
+import Preview from "@/components/Preview";
 import Shell from "@/components/Shell";
 import { ApertureIcon, GalleryIcon } from "@/components/icons";
 import { prepareFile } from "@/lib/image";
 import { runAnalysis } from "@/lib/analyse";
-import { readIntake } from "@/lib/session";
+import { readIntake, readPhoto } from "@/lib/session";
 
 /**
  * Frames 005 (choose camera or gallery), 006 (camera permission) and 011
@@ -22,21 +23,28 @@ export default function Select() {
   const [mode, setMode] = useState("choose"); // choose | camera-prompt | preparing
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
+  const [preview, setPreview] = useState(null);
 
   useEffect(() => {
     // Nobody should land here without completing the intake first.
     if (!readIntake()) router.replace("/testing");
-    else setReady(true);
+    else {
+      setPreview(readPhoto()); // coming back? show the last photo analysed
+      setReady(true);
+    }
   }, [router]);
 
   async function analyse(file) {
     setError("");
     setMode("preparing");
     try {
-      await runAnalysis(await prepareFile(file));
+      const photo = await prepareFile(file);
+      setPreview(photo.dataUrl);
+      await runAnalysis(photo);
       router.push("/analysis");
     } catch (err) {
       // Never strand the visitor on the spinner: back to the choice, with the reason.
+      setPreview(readPhoto());
       setError(err.message || "Something went wrong. Please try another photo.");
       setMode("choose");
     }
@@ -60,6 +68,7 @@ export default function Select() {
   if (mode === "preparing") {
     return (
       <Shell section="INTRO" showCode={false} back={null}>
+        <Preview src={preview} />
         <Preparing />
       </Shell>
     );
@@ -69,6 +78,7 @@ export default function Select() {
 
   return (
     <Shell section="INTRO" eyebrow="To start analysis" showCode={false} back={{ href: "/testing" }}>
+      <Preview src={preview} />
       <div className="grid w-full grid-cols-1 items-center justify-items-center gap-y-[13dvh] py-10 md:grid-cols-2">
         {/* Camera — frame 006's permission panel hangs off this target */}
         <div className="target">

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import DiamondButton from "@/components/DiamondButton";
 import Diamonds from "@/components/Diamonds";
 import Preparing from "@/components/Preparing";
+import Preview from "@/components/Preview";
 import Shell from "@/components/Shell";
 import { ApertureIcon, CameraGlyph } from "@/components/icons";
 import { runAnalysis } from "@/lib/analyse";
@@ -143,6 +144,7 @@ export default function Camera() {
   if (mode === "preparing") {
     return (
       <Shell section="ANALYSIS" showCode={false} back={null}>
+        <Preview src={photo?.dataUrl} />
         <Preparing />
       </Shell>
     );
