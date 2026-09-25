@@ -125,6 +125,9 @@ export default function Demographics() {
         {/* Centre */}
         <section id="demo-panel" className="demo__panel" aria-live="polite">
           <h2 className="demo__pick">{selected ? display(group, selected.key).heading : ""}</h2>
+          {/* Not in the Figma, on purpose: Skinstric's test API returns simulated
+              demographics, so every live visitor gets a guess that isn't them. */}
+          <p className="demo__note">Demo: estimates are simulated by Skinstric&apos;s test API.</p>
           {selected && <ConfidenceRing percent={selected.percent} label={display(group, selected.key).heading} />}
         </section>
 

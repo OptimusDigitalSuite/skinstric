@@ -581,7 +581,7 @@ a.hub__tile:focus-visible > span {
 /* Centre panel */
 .demo__panel {
   position: relative;
-  min-height: 21rem;
+  min-height: 23rem; /* heading + demo note + ring on a phone */
   padding: 1rem;
   border-top: 1px solid var(--ink);
   background: var(--grey);
@@ -591,6 +591,14 @@ a.hub__tile:focus-visible > span {
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.04em;
+}
+
+.demo__note {
+  margin-top: 0.5rem;
+  max-width: 22rem;
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  color: #5d636c; /* 5.6:1 on the panel grey; lighter failed WCAG AA for small text */
 }
 
 .conf-ring {
@@ -724,7 +732,7 @@ a.hub__tile:focus-visible > span {
   inset: 0;
   background: #fff;
   pointer-events: none;
-  animation: camera-flash 450ms ease-out forwards;
+  animation: camera-flash 650ms cubic-bezier(0.2, 0, 0, 1) forwards;
 }
 .camera__header {
   position: absolute;
@@ -893,7 +901,7 @@ a.hub__tile:focus-visible > span {
 
 @keyframes camera-flash {
   from {
-    opacity: 0.85;
+    opacity: 1;
   }
   to {
     opacity: 0;
