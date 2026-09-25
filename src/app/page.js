@@ -1,26 +1,64 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import DiamondButton from "@/components/DiamondButton";
+import Shell from "@/components/Shell";
 
 /**
- * Placeholder landing page. The real one comes from the Figma —
- * this exists so the deploy is live from day one.
+ * Landing, Figma frames 000 (resting) and 001 (TAKE TEST hovered).
+ *
+ * Hovering or focusing a side slides the headline to the opposite edge, fades
+ * the other side out and blooms that side's diamond into three rings. The
+ * Figma only draws the TAKE TEST case; DISCOVER A.I. mirrors it. All of the
+ * motion lives in CSS (see "Landing" in globals.css) — this component only
+ * says which side has attention, via data-focus.
  */
+const SIDES = [
+  { key: "left", label: "Discover A.I.", direction: "back" },
+  { key: "right", label: "Take test", direction: "proceed" },
+];
+
 export default function Home() {
+  const [focus, setFocus] = useState("none");
+
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center gap-6 px-6">
-      <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Skinstric [ intro ]</p>
-      <h1 className="text-4xl leading-tight font-semibold">
-        Sophisticated skincare
-      </h1>
-      <p className="max-w-prose text-neutral-600">
-        Scaffold only — the build starts when the design file lands. Both Skinstric endpoints are
-        already wired in <code className="rounded bg-neutral-100 px-1">src/lib/skinstric.js</code>.
-      </p>
-      <Link
-        href="/testing"
-        className="w-fit rounded-full border border-neutral-300 px-5 py-2 text-sm hover:border-neutral-900"
-      >
-        Take the test
-      </Link>
-    </main>
+    <Shell
+      section="INTRO"
+      footer={
+        <p className="landing-blurb max-w-xs text-[11px] leading-5 tracking-[0.02em] text-neutral-900 uppercase sm:text-xs sm:leading-6">
+          Skinstric developed an A.I. that creates a highly-personalised routine tailored to what your
+          skin needs.
+        </p>
+      }
+    >
+      <div className="landing absolute inset-0" data-focus={focus}>
+        <h1 className="landing-headline">
+          <span className="landing-line">
+            <span>Sophisticated</span>
+          </span>
+          <span className="landing-line">
+            <span>skincare</span>
+          </span>
+        </h1>
+
+        {SIDES.map(({ key, label, direction }) => (
+          <div
+            key={key}
+            className={`landing-side landing-side--${key}`}
+            onMouseEnter={() => setFocus(key)}
+            onMouseLeave={() => setFocus("none")}
+            onFocus={() => setFocus(key)}
+            onBlur={() => setFocus("none")}
+          >
+            <span aria-hidden="true" className="landing-diamond landing-diamond--3" />
+            <span aria-hidden="true" className="landing-diamond landing-diamond--2" />
+            <span aria-hidden="true" className="landing-diamond" />
+            <DiamondButton href="/testing" direction={direction} className="landing-cta">
+              {label}
+            </DiamondButton>
+          </div>
+        ))}
+      </div>
+    </Shell>
   );
 }
