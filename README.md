@@ -1,68 +1,81 @@
 # Skinstric
 
-A from-scratch build of Skinstric's A.I. skin-analysis flow, for the Frontend Simplified
-**Module 13 virtual internship**. Every one of the 14 frames in the internship Figma is built.
+A front-end build of Skinstric's A.I. skin-analysis flow. A visitor enters their name and city,
+takes or uploads a face photo, and gets the A.I.'s race, age and sex estimates, each with a
+confidence score they can review and correct.
+
+Built during the Frontend Simplified (FES) Module 13 virtual internship from the program's Figma
+design and API brief. All 14 Figma frames are implemented, and the build was approved by the program.
 
 **Live:** https://skinstric-flame.vercel.app
 
-## Stack
+## Features
 
-Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · deployed on Vercel.
-No animation library: all motion is CSS, so nothing extra ships to the browser.
+- **Two-step API flow**: name and city go to phase one, then the photo goes to phase two, which
+  returns demographic confidence scores (`src/lib/skinstric.js`). Requests time out and show
+  clear errors.
+- **Camera or gallery upload**: live camera with a mirrored selfie preview, retake/proceed, and
+  Space or Enter to take the picture. The camera is released as soon as the photo is taken.
+  Blocked or missing cameras get a message with a "try again" and an upload fallback.
+- **Drag and drop** a photo onto the gallery target. Wrong file types, files that are too large
+  and HEIC photos a browser can't decode each get their own error message.
+- **In-browser image resizing**: photos are redrawn to at most 1024px on the long edge and
+  re-encoded as JPEG before upload, with EXIF rotation respected (`src/lib/image.js`).
+- **Demographics screen**: animated confidence ring, and the options list is a real radio group
+  (arrow keys move and select) so the visitor can correct the A.I.'s pick and confirm it.
+- **Refresh-safe**: progress is kept in `sessionStorage`, so every route survives a refresh or a
+  pasted link and sends the visitor back a step if something it needs is missing.
+- **Accessibility**: every hover state also works on keyboard focus, focus is always visible,
+  status changes are announced to screen readers, and `prefers-reduced-motion` is respected.
+- **Responsive**: every screen has a phone layout.
 
-## The flow
+The phase-two results come from Skinstric's test API, which returns simulated demographics (as
+the brief describes), and the results screen says so.
 
-| Route | Figma frames | What happens |
-|---|---|---|
-| `/` | 000, 001 | Landing. Hovering or focusing TAKE TEST slides the headline left and blooms the diamond; DISCOVER A.I. mirrors it |
-| `/testing` | 002, 504, 505 | Name, then city → **phase one** API. PROCEED only appears once there is input |
-| `/select` | 005, 006, 011 | Camera or gallery. The camera asks permission first (006); the gallery path runs straight to analysis |
-| `/camera` | 007, 009, 010, 011 | Live camera, capture, retake or proceed → **phase two** API |
-| `/analysis` | 012 | The A.I. analysis hub. Only Demographics has data from the API; the other three say "coming soon" |
-| `/analysis/demographics` | 013, 014 | Race / age / sex: the A.I.'s pick, its confidence ring, and every option to correct it. RESET / CONFIRM |
+## Tech stack
 
-Every route survives a refresh or a pasted link (state lives in `sessionStorage`) and sends the
-visitor back a step if what it needs is missing.
+| Technology | Version |
+|---|---|
+| Next.js (App Router) | 16.2.10 |
+| React / React DOM | 19.2.4 |
+| Tailwind CSS (`@tailwindcss/postcss`) | 4.3.3 |
+| react-icons | 5.7.0 |
+| ESLint (`eslint-config-next`) | 9.39.5 (16.2.10) |
+| Language | JavaScript |
+| Hosting | Vercel |
 
-## Beyond the Figma
+All animation is plain CSS (no animation library).
 
-- **Photos are downscaled in the browser** to ≤1024px JPEG before upload: an 8 MB phone photo goes up
-  as ~20 KB, which is faster on mobile data and stays under the function's payload limit
-  (`src/lib/image.js`)
-- **Drag and drop** a photo onto the gallery target; wrong file types, oversized files and HEIC in
-  browsers that can't decode it each get a plain-English error
-- **Camera:** mirrored selfie preview with a matching capture, a capture flash, Space/Enter to shoot,
-  and the camera is released the moment the picture is taken (the light goes off). Blocked, missing
-  or busy cameras get a clear message with "try again" and "upload a photo instead"
-- **Demographics:** the ring and the number count up together; the options list is a real radio
-  group (arrow keys move and choose); ages read youngest to oldest while race and sex read by
-  confidence; confirmed corrections persist
-- **Keyboard and screen readers:** every hover state also works on focus, focus is always visible,
-  status changes are announced
-- **Reduced motion** is respected everywhere, and every screen has a designed phone layout
-- The **Preview** box from the walkthrough (not in frame 005) shows the photo being analysed
+**Node.js:** 20.9.0 or newer (the minimum Next.js 16 requires). Built and tested on Node 24.14.1.
 
-The phase-two demographics are simulated by Skinstric's test API, per the brief, and the results
-screen says so.
-
-## Run it
+## Getting started
 
 ```bash
+git clone https://github.com/OptimusDigitalSuite/skinstric.git
+cd skinstric
 npm install
 npm run dev          # http://localhost:3000
-npm run check:api    # calls both live endpoints and prints what comes back
 ```
 
-The camera needs `localhost` or HTTPS.
+No environment variables are needed: the app calls Skinstric's public test API directly.
 
-## Where things are
+Other scripts:
+
+```bash
+npm run build        # production build
+npm run lint         # ESLint
+npm run check:api    # calls both live API endpoints and prints what comes back
+```
+
+The camera only works on `localhost` or HTTPS. There are no automated tests in this project.
+
+## Project structure
 
 ```
-src/app/            one folder per route
-src/components/     Shell (the frame every screen sits in), Diamonds, DiamondButton,
-                    ConfidenceRing, Preview, Preparing, icons
+src/app/              one folder per route (/, /testing, /select, /camera, /analysis, /analysis/demographics)
+src/components/       Shell, Diamonds, DiamondButton, ConfidenceRing, Preview, Preparing, icons
 src/lib/skinstric.js  the two API calls
-src/lib/image.js      file / camera frame → upload-ready JPEG
-src/lib/session.js    what the visitor gave us, refresh-safe
+src/lib/image.js      file or camera frame -> upload-ready JPEG
+src/lib/session.js    refresh-safe visitor state
 docs/design-spec.md   the Figma, read frame by frame
 ```
